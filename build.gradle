@@ -1,0 +1,51 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.5'
+	id 'io.spring.dependency-management' version '1.1.3'
+	id "io.freefair.lombok" version "8.4"
+	id "org.hibernate.orm" version "6.3.1.Final"
+}
+
+ext {
+	telegrambotsVersion = '6.8.0'
+	logbackVersion = '1.4.8'
+	jaxbApiVersion = '2.3.1'
+	postgresqlDriverVersion = '42.6.0'
+	springOrmVersion = '6.0.13'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+
+	implementation "org.telegram:telegrambots:$telegrambotsVersion"
+	implementation "org.telegram:telegrambotsextensions:$telegrambotsVersion"
+
+	implementation "ch.qos.logback:logback-classic:$logbackVersion"
+	implementation "ch.qos.logback:logback-core:$logbackVersion"
+
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: jaxbApiVersion
+	implementation group: 'org.postgresql', name: 'postgresql', version: postgresqlDriverVersion
+	implementation group: 'org.springframework', name: 'spring-orm', version: springOrmVersion
+
+
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
