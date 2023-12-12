@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    username: postgres
+    password: 123
+    url: jdbc:postgresql://localhost:5432/crypto_bot?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+
+telegram:
+  bot:
+    username: xbezrukovx_crypto_bot
+    token: 6506559367:AAF7CJXojbtAryw0AdOhnx_Sjrsi9-5slNQ
+
+binance:
+  api:
+    getPrice: https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT
