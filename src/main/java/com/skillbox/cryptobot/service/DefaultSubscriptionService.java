@@ -20,9 +20,8 @@ public class DefaultSubscriptionService {
             return;
         }
 
-        Subscription newSub = Subscription.builder()
-                .telegramId(telegramUserId)
-                .build();
+        Subscription newSub = new Subscription();
+        newSub.setTelegramId(telegramUserId);
         subRepo.save(newSub);
         log.info(telegramUserId + " был добавлен в базу подписок.");
     }
