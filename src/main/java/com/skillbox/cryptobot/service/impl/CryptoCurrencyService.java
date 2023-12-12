@@ -1,7 +1,9 @@
-package com.skillbox.cryptobot.service;
+package com.skillbox.cryptobot.service.impl;
 
 import com.skillbox.cryptobot.client.BinanceClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @Slf4j
+@EnableScheduling
 public class CryptoCurrencyService {
     private final AtomicReference<Double> price = new AtomicReference<>();
     private final BinanceClient client;
@@ -22,5 +25,15 @@ public class CryptoCurrencyService {
             price.set(client.getBitcoinPrice());
         }
         return price.get();
+    }
+
+    @Scheduled(cron = "${binance.api.cron}")
+    private void setBitcoinPrice() {
+        try {
+            price.set(client.getBitcoinPrice());
+            log.debug("Цена биткоина обновлена.");
+        } catch (IOException e) {
+            log.error("Не удалось обновить цену биткоина", e);
+        }
     }
 }

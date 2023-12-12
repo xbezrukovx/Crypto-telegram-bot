@@ -1,9 +1,10 @@
 package com.skillbox.cryptobot.bot.command;
 
-import com.skillbox.cryptobot.service.CryptoCurrencyService;
+import com.skillbox.cryptobot.service.impl.CryptoCurrencyService;
 import com.skillbox.cryptobot.utils.TextUtil;
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -15,10 +16,10 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
  */
 @Service
 @Slf4j
-@AllArgsConstructor
+@NoArgsConstructor
 public class GetPriceCommand implements IBotCommand {
 
-    private final CryptoCurrencyService service;
+    private CryptoCurrencyService service;
 
     @Override
     public String getCommandIdentifier() {
@@ -40,5 +41,10 @@ public class GetPriceCommand implements IBotCommand {
         } catch (Exception e) {
             log.error("Ошибка возникла /get_price методе", e);
         }
+    }
+
+    @Autowired
+    public void setService(CryptoCurrencyService service) {
+        this.service = service;
     }
 }
