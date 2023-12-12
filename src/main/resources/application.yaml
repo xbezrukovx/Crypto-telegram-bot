@@ -5,7 +5,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/crypto_bot?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
 
 
 telegram:
