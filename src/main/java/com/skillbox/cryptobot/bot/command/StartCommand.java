@@ -1,7 +1,6 @@
 package com.skillbox.cryptobot.bot.command;
 
-import com.skillbox.cryptobot.service.DefaultSubscriptionService;
-import lombok.AllArgsConstructor;
+import com.skillbox.cryptobot.service.impl.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-
 /**
  * Обработка команды начала работы с ботом
  */
@@ -19,7 +17,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Slf4j
 @RequiredArgsConstructor
 public class StartCommand implements IBotCommand {
-    private final DefaultSubscriptionService subscriptionService;
+    private final SubscriptionService subscriptionService;
 
     @Override
     public String getCommandIdentifier() {
@@ -43,6 +41,9 @@ public class StartCommand implements IBotCommand {
                 Привет! Данный бот помогает отслеживать стоимость биткоина.
                 Поддерживаемые команды:
                  /get_price - получить стоимость биткоина
+                 /get_subscription - Выводит информацию о подписке на цену
+                 /subscribe {стоимость} - подписывает на стоимость биткоина
+                 /unsubscribe - удаляет активную подписку
                 """);
         try {
             absSender.execute(answer);

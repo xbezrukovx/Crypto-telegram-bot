@@ -9,13 +9,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
-
 @Service
 @Slf4j
 public class CryptoBot extends TelegramLongPollingCommandBot {
-
     private final String botUsername;
-
 
     public CryptoBot(
             @Value("${telegram.bot.token}") String botToken,

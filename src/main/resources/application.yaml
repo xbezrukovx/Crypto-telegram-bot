@@ -7,6 +7,10 @@ spring:
     hibernate:
       ddl-auto: none
 
+application:
+  notifications:
+    user-delay: 3m
+    binance-check: 0 */2 * * * *
 
 telegram:
   bot:
@@ -16,3 +20,4 @@ telegram:
 binance:
   api:
     getPrice: https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT
+    cron: 0 * * * * *

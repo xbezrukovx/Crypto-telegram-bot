@@ -1,10 +1,11 @@
 package com.skillbox.cryptobot.bot.command;
 
-import com.skillbox.cryptobot.service.CryptoCurrencyService;
-import com.skillbox.cryptobot.service.DefaultSubscriptionService;
+import com.skillbox.cryptobot.service.impl.CryptoCurrencyService;
+import com.skillbox.cryptobot.service.impl.SubscriptionService;
 import com.skillbox.cryptobot.utils.TextUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -19,8 +20,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Slf4j
 @RequiredArgsConstructor
 public class SubscribeCommand implements IBotCommand {
-    private final CryptoCurrencyService service;
-    private final DefaultSubscriptionService subscriptionService;
+    private CryptoCurrencyService service;
+    private final SubscriptionService subscriptionService;
 
     @Override
     public String getCommandIdentifier() {
@@ -69,5 +70,10 @@ public class SubscribeCommand implements IBotCommand {
         } catch (Exception e) {
             log.error("Ошибка возникла /subscribe методе", e);
         }
+    }
+
+    @Autowired
+    public void setService(CryptoCurrencyService service) {
+        this.service = service;
     }
 }
