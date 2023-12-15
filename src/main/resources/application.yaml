@@ -9,7 +9,7 @@ spring:
 
 application:
   notifications:
-    user-delay: 3m
+    user-delay: 10m
     binance-check: 0 */2 * * * *
 
 telegram:

@@ -20,15 +20,17 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 public class GetPriceCommand implements IBotCommand {
 
     private CryptoCurrencyService service;
+    public final static String COMMAND_IDENTIFIER = "get_price";
+    public final static String COMMAND_DESCRIPTION = "Возвращает цену биткоина в USD";
 
     @Override
     public String getCommandIdentifier() {
-        return "get_price";
+        return COMMAND_IDENTIFIER;
     }
 
     @Override
     public String getDescription() {
-        return "Возвращает цену биткоина в USD";
+        return COMMAND_DESCRIPTION;
     }
 
     @Override
@@ -36,7 +38,8 @@ public class GetPriceCommand implements IBotCommand {
         SendMessage answer = new SendMessage();
         answer.setChatId(message.getChatId());
         try {
-            answer.setText("Текущая цена биткоина " + TextUtil.toString(service.getBitcoinPrice()) + " USD");
+            String answerText = TextUtil.getCurrentBitcoinPrice(service.getBitcoinPrice());
+            answer.setText(answerText);
             absSender.execute(answer);
         } catch (Exception e) {
             log.error("Ошибка возникла /get_price методе", e);

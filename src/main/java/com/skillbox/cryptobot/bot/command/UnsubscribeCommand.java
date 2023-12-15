@@ -18,15 +18,18 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @RequiredArgsConstructor
 public class UnsubscribeCommand implements IBotCommand {
     private final SubscriptionService subscriptionService;
+    public final static String COMMAND_IDENTIFIER = "subscribe";
+    public final static String COMMAND_DESCRIPTION = "Подписывает пользователя на стоимость биткоина";
+    private final static String MESSAGE_OK = "Подписка отменена";
 
     @Override
     public String getCommandIdentifier() {
-        return "unsubscribe";
+        return COMMAND_IDENTIFIER;
     }
 
     @Override
     public String getDescription() {
-        return "Отменяет подписку пользователя";
+        return COMMAND_DESCRIPTION;
     }
 
     @Override
@@ -38,7 +41,7 @@ public class UnsubscribeCommand implements IBotCommand {
         subscriptionService.createSubscription(currentChatId, null);
 
         try {
-            answer.setText("Подписка отменена");
+            answer.setText(MESSAGE_OK);
             absSender.execute(answer);
         } catch (TelegramApiException ex) {
             log.error("Ошибка возникла /unsubscribe методе", ex);

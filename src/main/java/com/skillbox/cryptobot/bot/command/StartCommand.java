@@ -18,15 +18,24 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @RequiredArgsConstructor
 public class StartCommand implements IBotCommand {
     private final SubscriptionService subscriptionService;
+    public final static String COMMAND_IDENTIFIER = "start";
+    public final static String COMMAND_DESCRIPTION = "Запускает бота";
+    private final static String MESSAGE_WELCOME =
+            "Привет! Данный бот помогает отслеживать стоимость биткоина.\n" +
+            "Поддерживаемые команды:\n" +
+            " /get_price - получить стоимость биткоина\n" +
+            " /get_subscription - Выводит информацию о подписке на цену\n" +
+            " /subscribe {стоимость} - подписывает на стоимость биткоина\n" +
+            " /unsubscribe - удаляет активную подписку";
 
     @Override
     public String getCommandIdentifier() {
-        return "start";
+        return COMMAND_IDENTIFIER;
     }
 
     @Override
     public String getDescription() {
-        return "Запускает бота";
+        return COMMAND_DESCRIPTION;
     }
 
     @Override
@@ -37,18 +46,11 @@ public class StartCommand implements IBotCommand {
         answer.setChatId(currentChatId);
         subscriptionService.createNewUser(currentChatId);
 
-        answer.setText("""
-                Привет! Данный бот помогает отслеживать стоимость биткоина.
-                Поддерживаемые команды:
-                 /get_price - получить стоимость биткоина
-                 /get_subscription - Выводит информацию о подписке на цену
-                 /subscribe {стоимость} - подписывает на стоимость биткоина
-                 /unsubscribe - удаляет активную подписку
-                """);
+        answer.setText(MESSAGE_WELCOME);
         try {
             absSender.execute(answer);
         } catch (TelegramApiException e) {
-            log.error("Error occurred in /start command", e);
+            log.error("Ошибка возникла /get_price методе", e);
         }
     }
 }
