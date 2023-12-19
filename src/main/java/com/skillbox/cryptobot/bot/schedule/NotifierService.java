@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class NotifierService {
     private final CryptoCurrencyService currencyService;
     private final Map<Long, LocalDateTime> subscriptionNotify = new ConcurrentHashMap<>();
     private final TelegramLongPollingCommandBot bot;
+    private final static String MESSAGE_NOTIFY = "Пора покупать, стоимость биткоина: {0} USD";
     @Value("${application.notifications.user-delay}")
     private Duration userdelay;
 
@@ -54,7 +56,6 @@ public class NotifierService {
                 subscriptionNotify.remove(telegramId);
             }
         }
-
         try {
             Double currentPrice = currencyService.getBitcoinPrice();
             subscriptionService
@@ -76,7 +77,8 @@ public class NotifierService {
         try {
             SendMessage answer = new SendMessage();
             answer.setChatId(telegramId);
-            answer.setText("Пора покупать, стоимость биткоина: " + TextUtil.toString(price) + " USD");
+            String text = MessageFormat.format(MESSAGE_NOTIFY, TextUtil.toString(price));
+            answer.setText(text);
             bot.execute(answer);
             subscriptionNotify.put(telegramId, LocalDateTime.now());
             log.info(telegramId + " уведомлен по подписке.");

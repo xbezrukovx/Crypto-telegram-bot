@@ -13,6 +13,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.text.MessageFormat;
+
 /**
  * Обработка команды подписки на курс валюты
  */
@@ -22,15 +24,19 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class SubscribeCommand implements IBotCommand {
     private CryptoCurrencyService service;
     private final SubscriptionService subscriptionService;
+    public final static String COMMAND_IDENTIFIER = "subscribe";
+    public final static String COMMAND_DESCRIPTION = "Подписывает пользователя на стоимость биткоина";
+    private final static String MESSAGE_ERROR = "Возникла ошибка, укажите корректную цену.";
+    private final static String MESSAGE_OK = "Новая подписка создана на стоимость {0}";
 
     @Override
     public String getCommandIdentifier() {
-        return "subscribe";
+        return COMMAND_IDENTIFIER;
     }
 
     @Override
     public String getDescription() {
-        return "Подписывает пользователя на стоимость биткоина";
+        return COMMAND_DESCRIPTION;
     }
 
     @Override
@@ -50,9 +56,9 @@ public class SubscribeCommand implements IBotCommand {
         }
 
         if (price == null) {
-            answer.setText("Возникла ошибка, укажите корректную цену.");
+            answer.setText(MESSAGE_ERROR);
         } else {
-            answer.setText("Новая подписка создана на стоимость " + price);
+            answer.setText(MessageFormat.format(MESSAGE_OK, price));
         }
 
         try {
@@ -65,7 +71,8 @@ public class SubscribeCommand implements IBotCommand {
 
 
         try {
-            answer.setText("Текущая цена биткоина " + TextUtil.toString(service.getBitcoinPrice()) + " USD");
+            String answerText = TextUtil.getCurrentBitcoinPrice(service.getBitcoinPrice());
+            answer.setText(answerText);
             absSender.execute(answer);
         } catch (Exception e) {
             log.error("Ошибка возникла /subscribe методе", e);
